@@ -1,0 +1,12 @@
+server:
+  port: 9999
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/notes_db
+    username: notes_user
+    password: notes_user_pass
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
