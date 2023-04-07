@@ -7,6 +7,9 @@ import com.example.notes.repositories.NoteRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class NoteService {
     NoteRepository noteRepository;
@@ -24,5 +27,13 @@ public class NoteService {
         var savedNote = noteRepository.save(noteEntity);
 
         return modelMapper.map(savedNote, NoteResponseDTO.class);
+    }
+
+    public List<NoteResponseDTO> getAllNotes() {
+        var noteEntites = noteRepository.findAll();
+
+        return noteEntites.stream()
+                .map(note -> modelMapper.map(note, NoteResponseDTO.class))
+                .collect(Collectors.toList());
     }
 }

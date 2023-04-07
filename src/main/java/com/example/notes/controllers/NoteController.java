@@ -3,15 +3,16 @@ package com.example.notes.controllers;
 import com.example.notes.dtos.CreateNoteDTO.CreateNoteDTO;
 import com.example.notes.dtos.NoteResponseDTO;
 import com.example.notes.services.NoteService.NoteService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.Collections;
 import java.util.List;
 
 @RestController
 @RequestMapping("/notes")
+@CrossOrigin(origins = "http://localhost:5173")
 public class NoteController {
     NoteService noteService;
 
@@ -21,7 +22,8 @@ public class NoteController {
 
     @GetMapping
     public ResponseEntity<List<NoteResponseDTO>> getAllNotes() {
-        return ResponseEntity.ok(Collections.emptyList());
+        return ResponseEntity.ok()
+                .body(noteService.getAllNotes());
     }
 
     @PostMapping
