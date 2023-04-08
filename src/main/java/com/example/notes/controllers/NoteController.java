@@ -3,7 +3,6 @@ package com.example.notes.controllers;
 import com.example.notes.dtos.CreateNoteDTO.CreateNoteDTO;
 import com.example.notes.dtos.NoteResponseDTO;
 import com.example.notes.services.NoteService.NoteService;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,5 +31,12 @@ public class NoteController {
 
         return ResponseEntity.created(URI.create("/notes/" + savedNote.getId()))
                 .body(savedNote);
+    }
+
+    @DeleteMapping("/{note_id}")
+    public ResponseEntity<String> deleteNote(@PathVariable("note_id") Integer noteId) {
+        noteService.deleteNote(noteId);
+
+        return ResponseEntity.accepted().body("Note successfully deleted");
     }
 }

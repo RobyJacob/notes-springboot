@@ -36,4 +36,8 @@ public class NoteService {
                 .map(note -> modelMapper.map(note, NoteResponseDTO.class))
                 .collect(Collectors.toList());
     }
+
+    public void deleteNote(Integer noteId) {
+        noteRepository.deleteById(noteId);
+    }
 }
