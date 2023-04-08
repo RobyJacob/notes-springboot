@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/notes")
@@ -20,9 +21,13 @@ public class NoteController {
     }
 
     @GetMapping
-    public ResponseEntity<List<NoteResponseDTO>> getAllNotes() {
-        return ResponseEntity.ok()
-                .body(noteService.getAllNotes());
+    public ResponseEntity<List<NoteResponseDTO>> getAllNotes(
+            @RequestParam(value = "title_pre", required = false) String titlePrefix) {
+        if (Objects.nonNull(titlePrefix)) {
+            return ResponseEntity.ok(noteService.getAllNotesByTitlePrefix(titlePrefix));
+        }
+
+        return ResponseEntity.ok(noteService.getAllNotes());
     }
 
     @GetMapping("/{note_id}")

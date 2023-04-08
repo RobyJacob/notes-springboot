@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class NoteService {
@@ -35,7 +34,7 @@ public class NoteService {
 
         return noteEntites.stream()
                 .map(note -> modelMapper.map(note, NoteResponseDTO.class))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public void deleteNote(Integer noteId) {
@@ -61,5 +60,13 @@ public class NoteService {
         var noteEntity = noteRepository.findById(noteId);
 
         return modelMapper.map(noteEntity, NoteResponseDTO.class);
+    }
+
+    public List<NoteResponseDTO> getAllNotesByTitlePrefix(String noteTitlePrefix) {
+        var notes = noteRepository.findByTitleStartsWithIgnoreCase(noteTitlePrefix);
+
+        return notes.stream()
+                .map(note -> modelMapper.map(note, NoteResponseDTO.class))
+                .toList();
     }
 }
