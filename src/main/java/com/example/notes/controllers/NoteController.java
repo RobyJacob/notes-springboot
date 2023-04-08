@@ -1,8 +1,8 @@
 package com.example.notes.controllers;
 
-import com.example.notes.dtos.CreateNoteDTO.CreateNoteDTO;
+import com.example.notes.dtos.CreateNoteDTO;
 import com.example.notes.dtos.NoteResponseDTO;
-import com.example.notes.services.NoteService.NoteService;
+import com.example.notes.services.NoteService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +25,11 @@ public class NoteController {
                 .body(noteService.getAllNotes());
     }
 
+    @GetMapping("/{note_id}")
+    public ResponseEntity<NoteResponseDTO> getNoteById(@PathVariable("note_id") Integer noteId) {
+        return ResponseEntity.ok(noteService.getNoteById(noteId));
+    }
+
     @PostMapping
     public ResponseEntity<NoteResponseDTO> addNote(@RequestBody CreateNoteDTO createNoteDTO) {
         var savedNote = noteService.addNote(createNoteDTO);
@@ -38,5 +43,13 @@ public class NoteController {
         noteService.deleteNote(noteId);
 
         return ResponseEntity.accepted().body("Note successfully deleted");
+    }
+
+    @PatchMapping("/{note_id}")
+    public ResponseEntity<NoteResponseDTO> updateNote(@PathVariable("note_id") Integer noteId,
+                                                      @RequestBody CreateNoteDTO newNote) {
+        var updatedNote = noteService.updateNote(noteId, newNote);
+
+        return ResponseEntity.accepted().body(updatedNote);
     }
 }

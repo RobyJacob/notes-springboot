@@ -1,4 +1,4 @@
-package com.example.notes.dtos.CreateNoteDTO;
+package com.example.notes.dtos;
 
 import lombok.Getter;
 import lombok.Setter;

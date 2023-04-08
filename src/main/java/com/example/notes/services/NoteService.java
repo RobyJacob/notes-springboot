@@ -1,6 +1,6 @@
-package com.example.notes.services.NoteService;
+package com.example.notes.services;
 
-import com.example.notes.dtos.CreateNoteDTO.CreateNoteDTO;
+import com.example.notes.dtos.CreateNoteDTO;
 import com.example.notes.dtos.NoteResponseDTO;
 import com.example.notes.entities.NoteEntity;
 import com.example.notes.repositories.NoteRepository;
@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,5 +40,26 @@ public class NoteService {
 
     public void deleteNote(Integer noteId) {
         noteRepository.deleteById(noteId);
+    }
+
+    public NoteResponseDTO updateNote(Integer noteId, CreateNoteDTO newNote) {
+        var note = getNoteById(noteId);
+
+        if (Objects.nonNull(newNote.getTitle())) {
+            note.setTitle(newNote.getTitle());
+        }
+        if (Objects.nonNull(newNote.getBody())) {
+            note.setBody(newNote.getBody());
+        }
+
+        noteRepository.save(modelMapper.map(note, NoteEntity.class));
+
+        return note;
+    }
+
+    public NoteResponseDTO getNoteById(Integer noteId) {
+        var noteEntity = noteRepository.findById(noteId);
+
+        return modelMapper.map(noteEntity, NoteResponseDTO.class);
     }
 }
